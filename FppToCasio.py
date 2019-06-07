@@ -8,7 +8,7 @@ alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 a_var = alphabet
 a_lst = [str(i) for i in range(1, 21)]
 a_strs = [str(i) for i in range(1, 21)]
-a_mat  = alphabet 
+a_mat  = alphabet
 
 group_count = {"(":0, ")":0, "{":0, "}":0, "[":0, "]":0, '"':0}
 group_pairs = [('(',')'), ('{','}'), ('[',']')]
@@ -22,6 +22,17 @@ operators = "+-*/= ,"
 
 WRITE_IN = []
 
+def run():
+    initDictionary()
+    lines = readFile("samplecode")
+    lines = lines[1:-1]
+    i = lines.index("begin")
+    begin, body = lines[:i], lines[i+1:]
+    a = generateCodeInit(begin)
+    for e in a:
+        t = transcript(e)
+        print(t)
+        
 def readFile(filedir, ext="fpp", clean=True):
     file = open(filedir+"."+ext, 'r', encoding="utf8")
     lines = file.read()
@@ -125,9 +136,10 @@ def generateCodeInit(lines, detailed = False):
                         a_var = a_var[1:]
 
                     if("=" in g):                                   # "var gravity = 9.81"
-                        if(g[3][0] == '{' and g[3][-1] == '}'):
+                        if(g[2][0] == '{' and g[2][-1] == '}'):
                             g.insert(0, "dim")
                         g = swapAround(g)
+
                     if(detailed or len(g) > 1):
                         output.append(g)
                 else:
@@ -138,7 +150,6 @@ def generateCodeInit(lines, detailed = False):
             groups = asGoesFirst(groups)
             for g in groups:
                 name = g[0]
-                print(g)
                 if(isNameAvailable(name) == True):
                     if(len(g) > 2 and g[1] == "as"):                # "mat matrix as M"
                         if(len(g[2]) == 1 and g[2] in a_mat):
@@ -222,10 +233,18 @@ def generateCodeInit(lines, detailed = False):
                 else:
                     print("Name " + name + " is already used as a variable name or as part of the language lexicon")
 
+        elif(v == "const"):                          #constants alwayls look like "const G = 9.81"
+            groups = groupBy(split, ',')
+            for g in groups:
+                if(len(g) == 3):
+                    name = g[0]
+                    if(isNameAvailable(name) == True):
+                        const[g[0]] = g[2]        
+
         else:
             print("Failed", split)
 
-        return output
+    return output
 
 def asGoesFirst(groups): #put the groups containing "as" at the top of the queue
     temp = []
@@ -260,10 +279,9 @@ def transcript(split):
             return left+right
         except TypeError:
             print("Failed to assemble transcript: ", left, right)
-    else:
+    elif(len(split) == 1):
         elem = split[0]
         L = isNameAvailable(elem)
-        
         if(L != True):           #Is it a stored variable ?
             return L[elem]
         
@@ -283,7 +301,7 @@ def transcript(split):
 
         elif(elem[0] == '"' and elem[-1] == '"'):
             s=1
-            for i in range(2, len(elem)-2):
+            for i in range(1, len(elem)-2):
                 if(elem[i] == '$' and elem[i-1] != "\\"):
                     s=i+1
                     for j in range(i+1, len(elem)-1):
@@ -297,7 +315,8 @@ def transcript(split):
         
         else:
             print("No match for: ", elem)
-            
+    else:
+        print("Split is empty !")
 
 
 
