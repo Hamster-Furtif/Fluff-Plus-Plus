@@ -1,0 +1,31 @@
+>>ln($a)
+ln ($a)
+<<
+
+>>cos($a)
+cos ($a)
+<<
+
+>>sin($a)
+sin ($a)
+<<
+
+>>tan($a)
+tan ($a)
+<<
+
+>>exp($a)
+Æ^($a)
+<<
+
+>>arccos($a)
+cosÎ($a)
+<<
+
+>>arcsin($a)
+sinÎ ($a)
+<<
+
+>>arctan($a)
+tanÎ ($a)
+<<

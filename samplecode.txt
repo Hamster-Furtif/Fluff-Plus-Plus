@@ -1,0 +1,9 @@
+init
+var age = 20, height as H = 1.90, i, j
+str name = "Hamster_Furtif", sprite = "$DOT$"
+const HP_index=1, mana_index = 2, max_HP=100, max_mana=20
+lst stats = {max_HP, max_mana}
+const width=50, height = 60
+mat map = {width, height}
+begin
+end
