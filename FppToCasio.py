@@ -1,6 +1,8 @@
 dc = {}
 lexicon = []
 
+libs = {}
+
 var, const, strs, lst, mat = {}, {}, {}, {}, {}
 
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -57,10 +59,14 @@ def initDictionary():
             print("Error in dictionary: ", e)
     lexicon = list(dc.keys())
 
-def codeInit(lines):
-    for line in lines:
-        pass
-
+def loadLib(filedir, folder="/libs/"):
+    lines = readFile(folder+filedir, ext="txt")
+    funcs = []
+    for i in range(len(lines)):
+        line = lines[i]
+        if(len(line) >= 2 and line[:2] == ">>"):
+            func = []
+            
 
 def splitLine(line, split_all=False, getError=False):
     split = []
@@ -182,22 +188,24 @@ def generateCodeInit(lines, detailed = False):
             for g in groups:
                 name = g[0]
                 if(isNameAvailable(name) == True):
-                    if(len(g) > 2 and g[1] == "as"):                # "mat matrix as M"
+                    if(len(g) > 2 and g[1] == "as"):
                         if(len(g[2]) == 1 and g[2] in a_lst):
                             lst[name] = g[2]
                             a_lst = a_lst[:a_lst.index(g[2])]+a_lst[a_lst.index(g[2])+1:]
 
                             if("="  not in g):
                                 g = [g[0]]
-                            else:                                   # "mat matrix as M = [[1, 2],[3, 4]]"
+                            else:
                                 g = [g[0]]+g[3:]
 
-                    elif(len(a_var)>0):                             # "mat matrix"
+                    elif(len(a_var)>0):
                         lst[name] = a_lst[0]
                         a_lst = a_lst[1:]
 
                     g.insert(0, "lst")
-                    if("=" in g):                                   # "mat matrix = [[1, 2],[3, 4]]"
+                    if("=" in g):
+                        if not(g[3][0] == '{' and g[3][-1] == '}'):
+                            g.insert(0, "dim")
                         g = swapAround(g)
                     if(detailed or len(g) > 1):
                         output.append(g)
@@ -233,7 +241,7 @@ def generateCodeInit(lines, detailed = False):
                 else:
                     print("Name " + name + " is already used as a variable name or as part of the language lexicon")
 
-        elif(v == "const"):                          #constants alwayls look like "const G = 9.81"
+        elif(v == "const"):                          #constants always look like "const G = 9.81"
             groups = groupBy(split, ',')
             for g in groups:
                 if(len(g) == 3):
@@ -245,6 +253,20 @@ def generateCodeInit(lines, detailed = False):
             print("Failed", split)
 
     return output
+
+def generateMainCode(lines):
+    output = []
+    for l in lines:
+        split = splitLine(l)
+        split = replaceLogical(split)
+        if split[0] == "for":
+            i = split.index("to")
+            split[1:i] = swapAround(split[1:i])
+        
+            
+            
+
+        
 
 def asGoesFirst(groups): #put the groups containing "as" at the top of the queue
     temp = []
@@ -278,7 +300,7 @@ def transcript(split):
         try:
             return left+right
         except TypeError:
-            print("Failed to assemble transcript: ", left, right)
+            print("Failed to assemble transcript ", left, "with", right)
     elif(len(split) == 1):
         elem = split[0]
         L = isNameAvailable(elem)
@@ -291,7 +313,7 @@ def transcript(split):
         elif(isFloat(elem)):     #Is it a float ?
             return elem
 
-        elif(elem[0] in group_chars and elem[-1] in group_chars):
+        elif(elem[0] in group_chars and elem[-1] in group_chars):  #transcripts {},[] and () blocks
             local_split = splitLine(elem[1:-1])
             total = elem[0]
             for e in split:
@@ -299,7 +321,7 @@ def transcript(split):
             total += elem[-1]
             return total
 
-        elif(elem[0] == '"' and elem[-1] == '"'):
+        elif(elem[0] == '"' and elem[-1] == '"'): #searches for custom chars
             s=1
             for i in range(1, len(elem)-2):
                 if(elem[i] == '$' and elem[i-1] != "\\"):
@@ -327,16 +349,15 @@ def isFloat(string):
     except ValueError:
         return False
 
-def getVarTypePrefix(tp):
-    if tp == mat:
-        return "mat"
-    elif tp == lst:
-        return "list"
-    elif tp == strs:
-        return "string"
-    else:
-        return ""
-
+def replaceLogical(split):
+    i = 1
+    for i in range(1, len(split)):
+        if(split[i] == "=" and split[i-1] in "=!><"):
+            split[i-1] += "="
+            split[i] = ""
+    while("" in split):
+        split.remove("")
+    return split
 
 def test(s):
     initDictionary()

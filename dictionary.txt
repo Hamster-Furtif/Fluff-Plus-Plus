@@ -1,3 +1,5 @@
+﻿Ù	LINE_END
+=	==
 Õ	+
 Ö	-
 À	*
@@ -482,8 +484,8 @@ IfEnd 	ifend
 While 	while
 WhileEnd 	whileend
 For 	for
-To 	to
-Step 	step
+ To 	to
+ Step 	step
 Do 	do
 LapWhile 	lapwhile
 Mat 	mat

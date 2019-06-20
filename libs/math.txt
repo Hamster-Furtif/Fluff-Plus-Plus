@@ -1,4 +1,4 @@
->>ln($a)
+﻿>>ln($a)
 ln ($a)
 <<
 
@@ -28,4 +28,16 @@ sinÎ ($a)
 
 >>arctan($a)
 tanÎ ($a)
+<<
+
+>>factorial($a)
+$a!
+<<
+
+>>permutation($a, $b)
+$a†$b
+<<
+
+>>combination($a, $b)
+$a‚$b
 <<

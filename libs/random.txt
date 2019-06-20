@@ -1,0 +1,31 @@
+>>random()
+Ran# 
+<<
+
+>>ranInt($a, $b)
+RanInt#(($a,$b)
+<<
+
+>>ranIntList($a, $b, $c)
+RanInt#(($a,$b,$c)
+<<
+
+>>ranNorm($a, $b)
+RanNorm(($a,$b)
+<<
+
+>>ranNormList($a, $b, $c)
+RanNorm#(($a,$b,$c)
+<<
+
+>>ranBin($a, $b)
+RanBin(($a,$b)
+<<
+
+>>ranBinList($a, $b, $c)
+RanBin#(($a,$b,$c)
+<<
+
+>>randomList($a)
+RanList#($a)
+<<

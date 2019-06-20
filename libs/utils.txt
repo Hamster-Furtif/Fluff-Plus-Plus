@@ -1,0 +1,7 @@
+>>getKey()
+GetKey
+<<
+
+>>locate($a, $b, $c)
+Locate $a,$b,$c
+<<
