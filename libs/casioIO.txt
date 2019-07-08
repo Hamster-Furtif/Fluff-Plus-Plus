@@ -1,0 +1,9 @@
+casioIO
+
+>>getKey()
+Getkey
+<<
+
+>>locate($a, $b, $c)
+Locate $a,$b,$c
+<<

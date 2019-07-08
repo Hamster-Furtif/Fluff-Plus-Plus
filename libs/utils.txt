@@ -1,7 +1,42 @@
->>getKey()
-GetKey
+utils
+
+>>setLabel($a)
+Lbl $a
 <<
 
->>locate($a, $b, $c)
-Locate $a,$b,$c
+>>goto($a)
+Goto $a
+<<
+
+>>call($a)
+Prog $a
+<<
+
+>>clearText()
+ClrText
+<<
+
+>>clearGraph()
+ClrGraph
+<<
+
+>>clearLists()
+ClrList 
+<<
+
+>>clearList($a)
+ClrList $a
+<<
+
+>>clearMats()
+ClrMat
+<<
+
+>>clearMat($a)
+ClrMat $a
+<<
+
+>>idle($a)
+While GetkeyÈ$aÙ
+WhileEnd
 <<

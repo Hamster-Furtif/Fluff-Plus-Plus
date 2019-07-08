@@ -1,4 +1,6 @@
-﻿>>ln($a)
+math
+
+>>ln($a)
 ln ($a)
 <<
 
@@ -40,4 +42,16 @@ $a†$b
 
 >>combination($a, $b)
 $a‚$b
+<<
+
+>>sqrt($a)
+Ë$a
+<<
+
+>>abs($a)
+Abs $a
+<<
+
+>>pow($a, $b)
+$a^$b
 <<

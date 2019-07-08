@@ -1,0 +1,100 @@
+matrix
+
+==========================
+Returns the transpose of a matrix
+$a : a matrix
+
+>>getTurn($a)
+Trn $a
+<<
+==========================
+Transposes a matrix
+$a : a matrix
+
+>>turn($a)
+Trn $aã$a
+<<
+==========================
+Sets the dimensions of a matrix (and fills it with zeros)
+$a : lines
+$b : columns
+$c : a matrix
+
+>>setDim($a, $b, $c)
+{$a,$b}ãDim $c
+<<
+==========================
+Gets the dimensions of a matrix (as a list)
+$a : a matrix
+
+>>getDim($a)
+Dim $a
+<<
+==========================
+Returns a list equal to one of a matrix's columns
+$a : a matrix
+$b : the column wanted as a list
+
+>>getColumn($a, $b)
+MatãList($a,$b)
+<<
+==========================
+Returns a list equal to one of a matrix's lines
+$a : a matrix
+$b : the line wanted as a list
+
+>>getLine($a, $b)
+MatãList(Trn $a,$b)
+<<
+==========================
+Returns the determinant of a matrix
+$a : a matrix
+
+>>det($a)
+Det $a
+<<
+==========================
+Merges two matrices, of size n*a and n*b into a matrix of size n*(a+b)
+$a : the matrix that will end up on the left
+$b : the matrix that will end up on the right
+
+>>mergeLines($a, $b)
+Augment($a,$b)
+<<
+==========================
+Merges two matrices, of size a*n and b*n into a matrix of size (a+b)*n
+$a : the matrix that will end up on the top
+$b : the matrix that will end up on the bottom
+
+>>mergeColumns($a, $b)
+Trn Augment(Trn $a,Trn $b)
+<<
+==========================
+Returns the Identity matrix of size n
+$a : a positive integer
+
+>>identity($a)
+Identity $a
+<<
+==========================
+Fills a matrix with a given number
+$a : a matrix
+$b : a number to fill it up with
+
+>>fill($a, $b)
+Fill($b,$a)
+<<
+==========================
+Returns the row echelon form of a matrix
+$a : a matrix
+
+>>rowEchelonForm($a)
+Ref $a
+<<
+==========================
+Returns the column echelon form of a matrix
+$a : a matrix
+
+>>columnEchelonForm($a)
+Rref $a
+<<

@@ -1,31 +1,36 @@
+random
+
+Nope, I did not mess up here. Bin turns into Int, List into Norm, ...
+
+
 >>random()
-Ran# 
+Ran#
 <<
 
 >>ranInt($a, $b)
-RanInt#(($a,$b)
+RanBin#($a,$b)
 <<
 
 >>ranIntList($a, $b, $c)
-RanInt#(($a,$b,$c)
+RanBin#($a,$b,$c)
 <<
 
 >>ranNorm($a, $b)
-RanNorm(($a,$b)
+RanList#($a,$b)
 <<
 
 >>ranNormList($a, $b, $c)
-RanNorm#(($a,$b,$c)
+RanList#($a,$b,$c)
 <<
 
 >>ranBin($a, $b)
-RanBin(($a,$b)
+RanNorm#($a,$b)
 <<
 
 >>ranBinList($a, $b, $c)
-RanBin#(($a,$b,$c)
+RanNorm#($a,$b,$c)
 <<
 
 >>randomList($a)
-RanList#($a)
+RanInt#($a)
 <<

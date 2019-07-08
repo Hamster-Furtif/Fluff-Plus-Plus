@@ -14,26 +14,39 @@ a_mat  = alphabet
 
 group_count = {"(":0, ")":0, "{":0, "}":0, "[":0, "]":0, '"':0}
 group_pairs = [('(',')'), ('{','}'), ('[',']')]
-group_chars = "(){}[]"
+group_chars = '(){}[]'
 group_left  = [e[0] for e in group_pairs]
 group_right = [e[1] for e in group_pairs]
 
-operators = "+-*/= ,"
+operators = '+-*/= ,<>'
 
+LINE_END = "Ù\n"
 
-
-WRITE_IN = []
-
-def run():
+def run(name, path="", r=True):
+    if r:
+        reset()
+    WRITE_IN = ["Filename:"+name+"\n"]
+    loadLib("math", is_default_lib = True)
+    loadLib("utils", is_default_lib = True)
+    loadLib("casioIO", is_default_lib = True)
     initDictionary()
-    lines = readFile("samplecode")
-    lines = lines[1:-1]
+    lines = readFile(path+name)
+    lines = lines[1:lines.index("end")]
+    while("" in lines):
+        lines.remove("")
     i = lines.index("begin")
     begin, body = lines[:i], lines[i+1:]
     a = generateCodeInit(begin)
     for e in a:
-        t = transcript(e)
+        t = transcript(e, "Transcript code init")
         print(t)
+        WRITE_IN.append(t+LINE_END)
+    for l in body:
+        e = generateMainCode(l)
+        t = transcript(e, "Transcript main code")
+        print(t)
+        WRITE_IN.append(t+LINE_END)
+    writeFile(WRITE_IN, path+name)
         
 def readFile(filedir, ext="fpp", clean=True):
     file = open(filedir+"."+ext, 'r', encoding="utf8")
@@ -43,8 +56,18 @@ def readFile(filedir, ext="fpp", clean=True):
     lines = lines.split("\n")
     return lines
 
+def reset():
+    dc = {}
+    lexicon = []
+    libs = {}
+    var, const, strs, lst, mat = {}, {}, {}, {}, {}
+    a_var = alphabet
+    a_lst = [str(i) for i in range(1, 21)]
+    a_strs = [str(i) for i in range(1, 21)]
+    a_mat  = alphabet
+    group_count = {"(":0, ")":0, "{":0, "}":0, "[":0, "]":0, '"':0}
 
-def writeFile(lines, filedir, ext="fpp"):
+def writeFile(lines, filedir, ext="cfp"):
     file = open(filedir+"."+ext,'w', encoding="utf8")
     file.writelines(lines)
     file.close()
@@ -59,27 +82,77 @@ def initDictionary():
             print("Error in dictionary: ", e)
     lexicon = list(dc.keys())
 
-def loadLib(filedir, folder="/libs/"):
+def loadLib(filedir, folder="libs/", is_default_lib=False):
     lines = readFile(folder+filedir, ext="txt")
-    funcs = []
-    for i in range(len(lines)):
+    libname = ""
+    if not is_default_lib:
+        libname = lines[0]+"."
+    for i in range(1, len(lines)):
         line = lines[i]
         if(len(line) >= 2 and line[:2] == ">>"):
-            func = []
+            line = line[2:]
+            body = ""
+            while lines[i+1] != "<<":
+                i += 1
+                body += lines[i]+"\n"
+            body = body[:-1]
+            libs[libname+line] = body
+            
+def findFromLibs(string):
+    if(string.startswith("menu(")):
+        args = string[string.index('('):]
+        return "Menu " + transcript([args], "Special case menu in findFromLibs")[1:-1]
+    if(string.startswith("absolute(")):
+        L = isNameAvailable(string[string.index('(')+1:-1])
+        if(L != True):
+            return str(L[string[string.index('(')+1:-1]])
+        
+    if('(' in string):
+        keys = list(libs.keys())
+        pattern = string[0:string.index('(')]
+        
+        args = string[string.index('(')+1:-1]
+        if args != "":
+            args = splitLine(args, ops=", ")
+        while ',' in args:
+            args.remove(',')
+        for i in range(len(args)):
+            args[i] = transcript(splitLine(args[i]), "Transcript findFromLibs")
+        for k in keys:
+            if k[0:k.index('(')] == pattern:
+                params = k[k.index('(')+1:-1]
+                if params == "":
+                    return libs[k]
+
+                params = splitLine(params, ops=", ")
+                while ',' in params:
+                    params.remove(',')
+                    
+                result = libs[k]
+                for i in range(len(args)):
+                    result = result.replace(params[i], args[i])
+                return result
+    return False
             
 
-def splitLine(line, split_all=False, getError=False):
+def splitLine(line, split_all=False, getError=False, ops=operators):
     split = []
     s=0
     error = ""
+    in_string = False
     for i in range(len(line)):
-        if(line[i] in operators and (checkGroups() or split_all)):
+        if(line[i] == '"'):
+            in_string = not in_string
+        if((line[i] in ops and (checkGroups() or split_all)) and not in_string):
             if(s != i):
                 split.append(line[s:i])
             split.append(line[i])
             if(i<len(line)-1):
                 s=i+1
         elif(line[i] in group_chars):
+            if groupCountTotal() == 0 and False:
+                split.append(line[s:i])
+                s = i
             group_count[line[i]] += 1
 
     if not (line[-1] in operators):
@@ -87,6 +160,8 @@ def splitLine(line, split_all=False, getError=False):
 
     while(" " in split):
         split.remove(" ")
+    split = replaceLogical(split)
+    resetGroupCount()
     if(getError):
         return split, error
     else:
@@ -107,8 +182,18 @@ def checkGroups():
     b = True
     for l,r in group_pairs:
         b = (b and (group_count[l] == group_count[r]))
-    b = b and group_count['"']//2 == 0
+    b = b and (group_count['"']//2 == 0)
     return b
+
+def groupCountTotal():
+    s = 0
+    for e in group_chars:
+        s += group_count[e]
+    return s
+
+def resetGroupCount():
+    for e in group_chars:
+        group_count[e] = 0
 
 
 def generateCodeInit(lines, detailed = False):
@@ -171,9 +256,8 @@ def generateCodeInit(lines, detailed = False):
                         mat[name] = a_mat[0]
                         a_mat = a_mat[1:]
 
-                    g.insert(0, "mat")
                     if("=" in g):                                   # "mat matrix = [[1, 2],[3, 4]]"
-                        if(g[3][0] == '{' and g[3][-1] == '}'):
+                        if(g[2][0] == '{' and g[2][-1] == '}'):
                             g.insert(0, "dim")
                         g = swapAround(g)
                     if(detailed or len(g) > 1):
@@ -202,9 +286,8 @@ def generateCodeInit(lines, detailed = False):
                         lst[name] = a_lst[0]
                         a_lst = a_lst[1:]
 
-                    g.insert(0, "lst")
                     if("=" in g):
-                        if not(g[3][0] == '{' and g[3][-1] == '}'):
+                        if not(g[2][0] == '{' and g[2][-1] == '}'):
                             g.insert(0, "dim")
                         g = swapAround(g)
                     if(detailed or len(g) > 1):
@@ -233,7 +316,6 @@ def generateCodeInit(lines, detailed = False):
                         strs[name] = a_strs[0]
                         a_strs = a_strs[1:]
 
-                    g.insert(0, "str")
                     if("=" in g):                                   # "str s = "Hello World""
                         g = swapAround(g)
                     if(detailed or len(g) > 1):
@@ -247,22 +329,30 @@ def generateCodeInit(lines, detailed = False):
                 if(len(g) == 3):
                     name = g[0]
                     if(isNameAvailable(name) == True):
-                        const[g[0]] = g[2]        
+                        const[g[0]] = g[2]
+
+        elif(v == "import"):
+            groups = groupBy(split, ',')
+            for g in groups:
+                loadLib(g[0])
 
         else:
             print("Failed", split)
 
     return output
 
-def generateMainCode(lines):
-    output = []
-    for l in lines:
-        split = splitLine(l)
-        split = replaceLogical(split)
-        if split[0] == "for":
-            i = split.index("to")
-            split[1:i] = swapAround(split[1:i])
-        
+def generateMainCode(line):
+    split = splitLine(line)
+    split = replaceLogical(split)
+    if split[0] == "for":
+        i = split.index("to")
+        split[1:i] = swapAround(split[1:i])
+    elif "causes" in split:
+        i = split.index("causes")
+        split[i+1:] = swapAround(split[i+1:])
+    elif "=" in split:
+        split = swapAround(split)
+    return split
             
             
 
@@ -293,10 +383,15 @@ def swapAround(split, c="="):
 
 
 
-def transcript(split):
-    if(len(split) > 1):
-        left = transcript([split[0]])
-        right = transcript(split[1:])
+def transcript(split, origin="(Origin Unknown)"):
+
+    if(type(split) != list):
+        print("Warning in transcript from '" + origin + "' ! list expected, instead found ", type(split), ". Autocorrection may cause further issues.")
+        split= [split]
+        
+    if(len(split) > 1 ):
+        left = transcript([split[0]], "left")
+        right = transcript(split[1:], "right")
         try:
             return left+right
         except TypeError:
@@ -304,9 +399,11 @@ def transcript(split):
     elif(len(split) == 1):
         elem = split[0]
         L = isNameAvailable(elem)
-        if(L != True):           #Is it a stored variable ?
-            return L[elem]
+        INLIBS = findFromLibs(elem)
         
+        if(L != True):           #Is it a stored variable ?
+            return getPrefix(L) + L[elem]
+                
         elif(elem.isdigit()):    #Is it an integer ?
             return elem
 
@@ -316,27 +413,33 @@ def transcript(split):
         elif(elem[0] in group_chars and elem[-1] in group_chars):  #transcripts {},[] and () blocks
             local_split = splitLine(elem[1:-1])
             total = elem[0]
-            for e in split:
-                total += transcript(local_split)
+            total += transcript(local_split, 3)
             total += elem[-1]
             return total
 
         elif(elem[0] == '"' and elem[-1] == '"'): #searches for custom chars
-            s=1
-            for i in range(1, len(elem)-2):
-                if(elem[i] == '$' and elem[i-1] != "\\"):
-                    s=i+1
-                    for j in range(i+1, len(elem)-1):
-                        if(elem[j] == '$' and elem[j-1] != "\\"):
-                            elem = elem[:s-1] + dc[elem[s:j]] + elem[j+1:]
-                            i = 2
-                            break
+            n = (elem.count("$")-elem.count("\\$"))/2
+            n = int(n)
+            for i in range(n):
+                k = elem.index("$")
+                while (elem[k-1] == "\\"):
+                    print(">>", elem[k-1], ">>", k)
+                    k = elem.index("$", k+1)
+                l = elem.index("$", k+1)
+                elem = elem.replace(elem[k:l+1], dc[elem[k+1:l]], 1)
             return elem
+
         elif(elem in lexicon):   #Is it part of the lexicon ?
             return dc[elem]
+
+        elif(INLIBS):            #Is it from a lib ?
+            return INLIBS
+        elif('[' in elem):
+            k = elem.index('[')
+            return transcript([elem[:k],elem[k:]])
         
         else:
-            print("No match for: ", elem)
+            print("No match for: '"+elem+"'")
     else:
         print("Split is empty !")
 
@@ -359,8 +462,13 @@ def replaceLogical(split):
         split.remove("")
     return split
 
-def test(s):
-    initDictionary()
-    a = generateCodeInit([s])
-    for e in a:
-        print(transcript(e))
+
+def getPrefix(L):
+    if(L == mat):
+        return "Mat "
+    elif(L == lst):
+        return "List "
+    elif(L == strs):
+        return "Str "
+    else:
+        return ""

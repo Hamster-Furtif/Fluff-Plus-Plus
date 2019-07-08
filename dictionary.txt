@@ -1,10 +1,10 @@
-﻿Ù	LINE_END
+Ù	LINE_END
 =	==
-Õ	+
-Ö	-
++	+
+-	-
 À	*
 Á	/
-í	^
+^	^
 *	STAR
 /	DIV
 ã	=
@@ -153,9 +153,9 @@ _	_
 #E592	CURRENCY_EURO
 #E593	CURRENCY_GUILDER
 #E599	CURRENCY_CENT
-#E59A	Â£
+#E59A	£
 #E59A	CURRENCY_POUND
-#E59B	Â¤
+#E59B	¤
 #E59B	CURRENCY_UKNOWN
 #E59C	CURRENCY_YEN
 #E59D	PARAGRPH
@@ -479,16 +479,23 @@ _	_
 @E77A	Z_LOWER
 If 	if
 :Then 	then
-Else If 	elsif
-IfEnd 	ifend
+Else 	else
+IfEnd	endif
 While 	while
-WhileEnd 	whileend
+WhileEnd	endwhile
 For 	for
  To 	to
  Step 	step
-Do 	do
-LapWhile 	lapwhile
+Next	endfor
+Do	do
+LpWhile 	lapwhile
 Mat 	mat
 List 	lst
 String 	str
 Dim 	dim
+ And 	&&
+ Or 	||
+Not	not
+ Xor 	xor
+×	causes
+Break	break

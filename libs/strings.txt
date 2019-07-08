@@ -1,0 +1,5 @@
+string
+
+>>getChar($s, $i)
+StrMid($s,$i,$i)
+<<
