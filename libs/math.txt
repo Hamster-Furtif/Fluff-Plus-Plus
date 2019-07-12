@@ -55,3 +55,7 @@ Abs $a
 >>pow($a, $b)
 $a^$b
 <<
+
+>>inRange($a, $b, $c)
+($aÊ$b And $aÉ$c)
+<<

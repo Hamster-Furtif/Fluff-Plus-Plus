@@ -12,15 +12,11 @@ a_lst = [str(i) for i in range(1, 21)]
 a_strs = [str(i) for i in range(1, 21)]
 a_mat  = alphabet
 
-group_count = {"(":0, ")":0, "{":0, "}":0, "[":0, "]":0, '"':0}
-group_pairs = [('(',')'), ('{','}'), ('[',']')]
 group_chars = '(){}[]'
-group_left  = [e[0] for e in group_pairs]
-group_right = [e[1] for e in group_pairs]
 
 operators = '+-*/= ,<>'
 
-LINE_END = "Ù\n"
+LINE_END = "Ù"
 
 def run(name, path="", r=True):
     if r:
@@ -46,7 +42,15 @@ def run(name, path="", r=True):
         t = transcript(e, "Transcript main code")
         print(t)
         WRITE_IN.append(t+LINE_END)
-    writeFile(WRITE_IN, path+name)
+    DEF = []
+    for i in range(len(WRITE_IN)):
+        line = WRITE_IN[i]
+        L = len(line)
+        n = L//256
+        for i in range(n+1):
+            DEF.append(line[256*i:min(256*(i+1), L)]+"\n")
+            
+    writeFile(DEF, path+name)
         
 def readFile(filedir, ext="fpp", clean=True):
     file = open(filedir+"."+ext, 'r', encoding="utf8")
@@ -112,12 +116,20 @@ def findFromLibs(string):
         pattern = string[0:string.index('(')]
         
         args = string[string.index('(')+1:-1]
+        groups = []
+
+        
         if args != "":
-            args = splitLine(args, ops=", ")
-        while ',' in args:
-            args.remove(',')
-        for i in range(len(args)):
-            args[i] = transcript(splitLine(args[i]), "Transcript findFromLibs")
+            args = splitLine(args)
+            groups = groupBy(args, ",")
+
+        args = []
+        for g in groups:
+            total = ""
+            for e in g:
+                total += transcript([e], "Transcript findFromLibs")
+            args.append(total)
+            
         for k in keys:
             if k[0:k.index('(')] == pattern:
                 params = k[k.index('(')+1:-1]
@@ -133,41 +145,48 @@ def findFromLibs(string):
                     result = result.replace(params[i], args[i])
                 return result
     return False
-            
 
-def splitLine(line, split_all=False, getError=False, ops=operators):
+def splitLine(line, ops=operators):
+    group_count = {"(":0, ")":0, "{":0, "}":0, "[":0, "]":0, '"':0}
     split = []
-    s=0
     error = ""
     in_string = False
-    for i in range(len(line)):
+    sz = len(line)
+    s=0
+    for i in range(sz):
+        
         if(line[i] == '"'):
             in_string = not in_string
-        if((line[i] in ops and (checkGroups() or split_all)) and not in_string):
-            if(s != i):
-                split.append(line[s:i])
-            split.append(line[i])
-            if(i<len(line)-1):
-                s=i+1
-        elif(line[i] in group_chars):
-            if groupCountTotal() == 0 and False:
-                split.append(line[s:i])
-                s = i
-            group_count[line[i]] += 1
-
+            
+        if not in_string:
+            c = line[i]
+            
+            if c in ops and checkGroups(group_count):
+                if(s != i):
+                    split.append(line[s:i])
+                split.append(line[i])
+                if(i<len(line)-1):
+                    s=i+1
+                    
+            elif c in group_chars:
+                group_count[c] += 1
+                if(checkGroups(group_count)):
+                    split.append(line[s:i+1])
+                    s=i+1
+                elif (c == "[" and line[i-1] != "]" and line[i-1] != "[" and group_count['('] == group_count[')'] and group_count['['] == group_count[']']+1):
+                    split.append(line[s:i])
+                    s=i
+                    
     if not (line[-1] in operators):
         split.append(line[s:])        
 
     while(" " in split):
         split.remove(" ")
+        
     split = replaceLogical(split)
-    resetGroupCount()
-    if(getError):
-        return split, error
-    else:
-        return split
+    return split
 
-
+            
 def groupBy(split, c):
     group = [[]]
     for e in split:
@@ -178,22 +197,19 @@ def groupBy(split, c):
     return group
 
 
-def checkGroups():
+def checkGroups(group_count):
     b = True
-    for l,r in group_pairs:
+    for i in range(0, len(group_chars), 2):
+        l = group_chars[i]
+        r = group_chars[i+1]
         b = (b and (group_count[l] == group_count[r]))
-    b = b and (group_count['"']//2 == 0)
     return b
 
-def groupCountTotal():
+def groupCountTotal(group_count):
     s = 0
     for e in group_chars:
         s += group_count[e]
     return s
-
-def resetGroupCount():
-    for e in group_chars:
-        group_count[e] = 0
 
 
 def generateCodeInit(lines, detailed = False):
@@ -287,7 +303,7 @@ def generateCodeInit(lines, detailed = False):
                         a_lst = a_lst[1:]
 
                     if("=" in g):
-                        if not(g[2][0] == '{' and g[2][-1] == '}'):
+                        if not (g[2][0] == '{' and g[2][-1] == '}' or g[2] in list(lst.keys())) :
                             g.insert(0, "dim")
                         g = swapAround(g)
                     if(detailed or len(g) > 1):
@@ -387,7 +403,7 @@ def transcript(split, origin="(Origin Unknown)"):
 
     if(type(split) != list):
         print("Warning in transcript from '" + origin + "' ! list expected, instead found ", type(split), ". Autocorrection may cause further issues.")
-        split= [split]
+        split = [split]
         
     if(len(split) > 1 ):
         left = transcript([split[0]], "left")
@@ -423,7 +439,6 @@ def transcript(split, origin="(Origin Unknown)"):
             for i in range(n):
                 k = elem.index("$")
                 while (elem[k-1] == "\\"):
-                    print(">>", elem[k-1], ">>", k)
                     k = elem.index("$", k+1)
                 l = elem.index("$", k+1)
                 elem = elem.replace(elem[k:l+1], dc[elem[k+1:l]], 1)
@@ -434,12 +449,13 @@ def transcript(split, origin="(Origin Unknown)"):
 
         elif(INLIBS):            #Is it from a lib ?
             return INLIBS
-        elif('[' in elem):
+        elif('[' in elem and False):
             k = elem.index('[')
             return transcript([elem[:k],elem[k:]])
         
         else:
             print("No match for: '"+elem+"'")
+            return ">"+elem+"<"
     else:
         print("Split is empty !")
 

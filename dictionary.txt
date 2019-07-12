@@ -495,7 +495,7 @@ String 	str
 Dim 	dim
  And 	&&
  Or 	||
-Not	not
+Not 	not
  Xor 	xor
 ×	causes
 Break	break
