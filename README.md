@@ -1,6 +1,8 @@
 # Fluff-Plus-Plus
 A better way to code on your Casio Calculator
 
+*Let me start by saying I didn't know the .fpp extension was already dedicated to Fortran*
+
 Fluff++ is a transpiled language thats makes programming on your casio. It basically looks cleaner (especially with its Notepad++ custom syntax highlighting), and enables you to name variables.
 
 ## General structure
