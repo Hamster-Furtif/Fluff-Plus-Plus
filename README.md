@@ -137,3 +137,137 @@ begin
   -You can only have up to 26 `lst`, and the `as` keyword must be followed by a number 1→26  
   -You can only have up to 26 `mat`, and the `as` keyword must be followed by a capital letter A→Z  
   -You can only have up to 20 `str,`and the `as` keyword must be followed by a number 1→20  
+  
+  ## Conditions and loops
+  
+  ### Comparing variables
+  
+  #### For `var`
+  
+  You can use the classical `==`, `!=`, `>`, `>=`,...
+  
+  #### For `lst`, `mat`
+  
+  You can only check for equality with `==` **if the two objects you are comparing are of same dimension(s) !**
+  
+  #### For `str`
+  
+  Use the `equals` function provided in the string library:  
+  
+  ```
+  init
+    import string
+  begin
+    if (string.equals("Hello", "World") then
+    ...
+  end
+  ```
+  
+  ### Logicals 
+  
+  You can use the following logical operations:  
+    
+    -`&&` as `and`
+    -`||` as `or`
+    -`not` and `xor` as themselves
+  
+  ### `if` and `causes`
+
+  The `if` structure looks like this:  
+    
+  ```
+  if (condition) then
+    ...
+  else
+    ...
+  endif
+  ```
+  
+  The `else` block is of course optional.   
+  Here is a concrete example:  
+  
+  ```
+  if (current_player == 1) then
+		current_player = 2
+		player = Player2
+	else
+		current_player = 1
+		player = Player1
+	endif
+  ```
+  
+  If you only have one (1) operation to execute in your `if` block, you can use the more compact `causes` keyword:  
+  ```
+  condition causes operation
+  ```
+  or
+  ```
+  (condition1 && condition2 && ...) causes operation
+  ```  
+  
+  With the `causes` keyword, the following code takes 4 lines, instead of 12:  
+  ```
+  key == keys.up()    causes direction = UP
+	key == keys.left()  causes direction = LEFT
+	key == keys.down()  causes direction = DOWN
+	key == keys.right() causes direction = RIGHT
+  ```
+  
+  It is equivalent to:  
+    
+  ```
+  if (key == keys.up()) then
+    direction = UP
+  endif
+  if (key == keys.left()) then
+    ...
+  ...
+  ```
+  
+  ### `while` and `do`  
+    
+  There is not much to say about these two loops:  
+    
+  ```
+  while (condition)  
+    ...
+  endwhile
+  ```
+  
+  behaves exactly as you expect it to, and so does  
+    
+  ```
+  do  
+    ...
+  lapwhile (condition)  
+  ```
+    
+  *If you don't think that Casio's `LpWhile` means `Lap While` well that's too bad because I do, and so does Fluff++.*
+  
+  ### `for-next`
+  
+  To use the `for` loop, you need a variable already declared in the `init` block of your Fluff++ programm.  
+    
+  ```
+  init
+    lst mylist
+    var i
+  begin
+    for i=1 to 5
+      mylist[i] = i
+     next
+  end
+  ```
+  
+  at the end of the programm, `mylist` looks like `{1,2,3,4,5}`.
+  
+  You can also use the step keyword:
+  
+  ```
+  for i=5 to 0 step -0.5
+    ...
+  next
+  ```
+  Here, `i` will take the following values:  `{5.0, 4.5, 4.0, ... , 0.5, 0}`.
+  
+  
