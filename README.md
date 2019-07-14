@@ -244,7 +244,7 @@ begin
     
   *If you don't think that Casio's `LpWhile` means `Lap While` well that's too bad because I do, and so does Fluff++.*
   
-  ### `for-next`
+  ### `for-endfor`
   
   To use the `for` loop, you need a variable already declared in the `init` block of your Fluff++ programm.  
     
@@ -255,7 +255,7 @@ begin
   begin
     for i=1 to 5
       mylist[i] = i
-     next
+     endfor
   end
   ```
   
@@ -266,7 +266,7 @@ begin
   ```
   for i=5 to 0 step -0.5
     ...
-  next
+  endfor
   ```
   Here, `i` will take the following values:  `{5.0, 4.5, 4.0, ... , 0.5, 0}`.
   
