@@ -208,9 +208,9 @@ begin
   With the `causes` keyword, the following code takes 4 lines, instead of 12:  
   ```
   key == keys.up()    causes direction = UP
-	key == keys.left()  causes direction = LEFT
-	key == keys.down()  causes direction = DOWN
-	key == keys.right() causes direction = RIGHT
+  key == keys.left()  causes direction = LEFT
+  key == keys.down()  causes direction = DOWN
+  key == keys.right() causes direction = RIGHT
   ```
   
   It is equivalent to:  
