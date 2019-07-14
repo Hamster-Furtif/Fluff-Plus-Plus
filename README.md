@@ -114,7 +114,7 @@ begin
  init
   const HP = 1, MANA = 2, STAMINA = 3
   const MAX_HP = 100
-  lst player = 3 as 5
+  lst player as 5 = 3 
  begin
   player[HP] = MAX_HP
   player[MANA] = 20
