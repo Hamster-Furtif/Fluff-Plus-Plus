@@ -1,5 +1,48 @@
 string
 
 >>getChar($s, $i)
-StrMid($s,$i,$i)
+StrMid($s,$i,1)
+<<
+
+>>length($s)
+StrLen($s)
+<<
+
+>>equals($a, $b)
+(StrCmp($a,$b)=0)
+<<
+
+>>compare($a, $b)
+StrCmp($a,$b)
+<<
+
+Returns 0 if c is not in s, and the index of c if c is in s
+>>searchIn($c, $s)
+StrSrc($s,$c)
+<<
+
+Returns the first k characters of the string
+>>left($s, $k)
+StrLeft($s,$k)
+<<
+
+Returns the last k characters of the string
+>>right($s, $k)
+StrRight($s,$k)
+<<
+
+Returns the substring of length l starting from index i
+>>extract($s, $i, $k)
+
+>>addToString($s, $v, $i)
+For 1+Int log $vã$i To 1 Step -1
+$s+StrMid("0123456789",1+Int (10Frac ($vÁ(10^$i)),1)ã$s
+Next
+<<
+
+>>toString($s, $v, $i)
+""ã$s
+For 1+Int log $vã$i To 1 Step -1
+$s+StrMid("0123456789",1+Int (10Frac ($vÁ(10^$i)),1)ã$s
+Next
 <<

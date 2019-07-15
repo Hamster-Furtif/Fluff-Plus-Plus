@@ -37,6 +37,5 @@ ClrMat $a
 <<
 
 >>idle($a)
-While GetkeyÈ$aÙ
-WhileEnd
+While GetkeyÈ$a:WhileEnd
 <<
