@@ -270,4 +270,18 @@ begin
   ```
   Here, `i` will take the following values:  `{5.0, 4.5, 4.0, ... , 0.5, 0}`.
   
+  ## Writing your first Fluff++ code and transpiling it into Casio BASIC
   
+  Use your favorite text editor to write your program in a `.fpp` file. If you're using Notepad++, don't forget to use the custom Fluff++ syntax highlighter (`fpp notepad syntax.xml` in the repo).
+  When your program is ready, run the `run` command from the `FppToCasio.py` python file. It has 3 arguments:
+    
+  ```run(name, path, r)
+  	name: the name of your fpp file ( my_program.fpp => name=my_program)
+	path (optional): the path to your program. Not needed if your program is in the same folder as the python code
+	r (optional): resets all stored Casio variables before transpiling your code. Set to false, if you want to keep your variables in memory with each run
+  ```
+    
+  Your code will then be transpiled and printed into your Python console, as well as saved in a `.cfp` (compiled fluff++) file in the same directory as your `.fpp` code.
+  To upload your code to your casio use any software that works for you. I personally use the **Casio FA-124** software.
+  
+  Please feel free to ask your questions via Github or at hamster.furtif{-}outlook.com  (replace the {-} with an @).
