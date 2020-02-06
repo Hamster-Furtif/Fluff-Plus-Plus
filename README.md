@@ -276,8 +276,8 @@ begin
   When your program is ready, run the `run` command from the `FppToCasio.py` python file. It has 3 arguments:
     
   ```run(name, path, r)
-  	name: the name of your fpp file ( my_program.fpp => name=my_program)
-	path (optional): the path to your program. Not needed if your program is in the same folder as the python code
+  	name: the name of your fpp file ( my_program.fpp => name=my_program)  
+	path (optional): the path to your program. Not needed if your program is in the same folder as the python code  
 	r (optional): resets all stored Casio variables before transpiling your code. Set to false, if you want to keep your variables in memory with each run
   ```
     
