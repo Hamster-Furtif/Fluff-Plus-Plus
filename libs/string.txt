@@ -17,7 +17,7 @@ StrCmp($a,$b)
 <<
 
 Returns 0 if c is not in s, and the index of c if c is in s
->>searchIn($c, $s)
+>>searchIn($s, $c)
 StrSrc($s,$c)
 <<
 
@@ -31,8 +31,9 @@ Returns the last k characters of the string
 StrRight($s,$k)
 <<
 
-Returns the substring of length l starting from index i
->>extract($s, $i, $k)
+>>mid($s, $i, $k)
+StrMid($s,$i,$k)
+<<
 
 >>addToString($s, $v, $i)
 For 1+Int log $vã$i To 1 Step -1

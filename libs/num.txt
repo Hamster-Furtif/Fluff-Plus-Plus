@@ -1,0 +1,41 @@
+num
+
+>>abs($v)
+Abs ($v)
+<<
+
+>>int($v)
+Int ($v)
+<<
+
+>>frac($v)
+Frac ($v)
+<<
+
+>>round()
+RndÙ
+<<
+
+>>floor($v)
+Intg ($v)
+<<
+
+>>roundFix($v, $n)
+RndFix($v,$n)
+<<
+
+>>GDC($a, $b)
+GCD($a,$b)
+<<
+
+>>LCM($a, $b)
+LCM($a,$b)
+<<
+
+>>mod($a, $m)
+MOD($a,$m)
+<<
+
+>>modularExponentiation($v, $e, $m)
+MOD_Exp($v,$e,$m)
+<<

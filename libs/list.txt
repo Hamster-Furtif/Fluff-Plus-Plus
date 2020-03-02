@@ -1,0 +1,33 @@
+list
+
+>>getDim($a)
+Dim $a
+<<
+
+>>setDim($l, $d)
+$dãDim $l
+<<
+
+>>append($l, $v)
+Augment($l,{$v})ã$l
+<<
+
+>>concatenate($l, $v)
+Augment($l,$v)ã$l
+<<
+
+>>getAppend($l, $v)
+Augment($l,{$v})
+<<
+
+>>getConcatenate($l, $v)
+Augment($l,$v)
+<<
+
+>>clear($n)
+ClrList$n
+<<
+
+>>getList($i)
+List $i
+<<

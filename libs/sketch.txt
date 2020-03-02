@@ -1,0 +1,91 @@
+sketch
+
+>>clear()
+Cls
+<<
+
+>>drawLine($a, $b, $c, $d)
+F-Line $a,$b,$c,$d
+<<
+
+>>drawCircle($x, $y, $r)
+Circle $x,$y,$r
+<<
+
+>>drawVertical($x)
+Vertical $x
+<<
+
+>>drawHorizontal($y)
+Horizontal $y
+<<
+
+>>drawText($x, $y, $t)
+Text ($x),($y),$t
+<<
+
+>>pixelOn($x, $y)
+PxlOn $x,$y
+<<
+
+>>pixelOff($x, $y)
+PxlOff $x,$y
+<<
+
+>>pixelChange($x, $y)
+PxlChg $x,$y
+<<
+
+>>pixelTest($x, $y)
+PxlTest($x,$y)
+<<
+
+>>styleNormal($a)
+SketchNormal $a
+<<
+
+>>styleThick($a)
+SketchThick $a
+<<
+
+>>styleBroken($a)
+SketchBroken $a
+<<
+
+>>dot($a)
+SketchDot $a
+<<
+
+>>setWindow($a, $b, $c, $d, $e, $f)
+ViewWindow $a,$b,$c,$d,$e,$f
+<<
+
+>>initWindow()
+ViewWindow 1,127,0,1,63,0
+<<
+
+>>initCenteredWindow()
+ViewWindow -63,63,0,-31,31,0
+<<
+
+
+$e is the style parameter. If you want a "normal" style, you can write "null" as the 5th parameter.
+If you want any other style, call the style function with a null parameter.
+Ex:
+rect(1, 1, 5, 5, null)              //normal style
+rect(1, 1, 5, 5, styleNormal(null)) //normal style
+rect(1, 1, 5, 5, styleBroken(null)) //broken line style
+
+>>drawRect($a, $b, $c, $d, $e)
+$eF-Line $a,$b,$c,$bÙ
+$eF-Line $a,$d,$c,$dÙ
+$eF-Line $a,$b,$a,$dÙ
+$eF-Line $c,$b,$c,$dÙ
+<<
+
+>>drawPoly($l, $i, $e)
+	For 1ã$i To Dim $l-1Ù
+		$eF-Line ReP $l[+$i],ImP $l[+$i],ReP $l[$i+1],ImP $l[$i+1]Ù
+	NextÙ
+	$eF-Line ReP $l[1],ImP $l[1],ReP $l[Dim $l],ImP $l[Dim $l]Ù
+<<

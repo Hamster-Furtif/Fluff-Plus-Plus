@@ -1,0 +1,66 @@
+calc
+
+>>solve($e, $v)
+Solve($e, $v)
+<<
+
+>>solveBounded($e, $v, $u, $l)
+Solve($e, $v, $u, $l)
+<<
+
+>>solveInList($e, $v)
+SolveN($e, $v)
+<<
+
+>>solveInListBounded($e, $v, $u, $l)
+SolveN($e, $v, $u, $l)
+<<
+
+
+*            SUM
+*
+*    $f
+*     Σ ($e)
+*   $i=$b
+*   
+
+>>sum($e, $i, $b, $f)
+â($e, $i, $b, $f)
+<<
+
+>>logk($k, $v)
+log a(b)$k,$v)
+
+
+
+                      ####################################################################################
+					  # Make sure to use a variable initialized "as X" for all the following functions ! #
+					  ####################################################################################
+
+
+*      INTEGRAL
+*
+*    $f
+*     ∫ ($f)dX
+*    $b
+*
+	
+>>integral($f, $l, $u)
+¿($f, $l, $u)
+<<
+
+>>derivative($f, $x)
+d/dx($f, $x)
+<<
+
+>>secondDerivative($f, $x)
+d’/dx’($f, $x)
+<<
+
+>>min($f, $l, $u)
+FMin($f, $l, $u)
+<<
+
+>>max($f, $l, $u)
+FMax($f, $l, $u)
+<<

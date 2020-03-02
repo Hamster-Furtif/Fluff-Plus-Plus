@@ -36,6 +36,10 @@ ClrMat
 ClrMat $a
 <<
 
->>idle($a)
+>>idle()
+While Getkey=0:WhileEnd
+<<
+
+>>idleFor($a)
 While GetkeyÈ$a:WhileEnd
 <<

@@ -22,7 +22,7 @@
 #E5A4	MUCH_GREATER
 ½	compI
 #E5B0	EXP
-¼	E
+¼	POW10
 #E64F	PI
 ¾	INFINITY
 #E542	GAMMA
@@ -119,7 +119,7 @@
 Â·	STRAIGHT_QUOTES
 #	#
 $	$
-%	/
+%	%
 &	&
 '	'
 (	(
@@ -499,3 +499,4 @@ Not 	not
  Xor 	xor
 ×	causes
 Break	break
+	null

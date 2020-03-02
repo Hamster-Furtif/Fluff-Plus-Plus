@@ -21,7 +21,7 @@ tan ($a)
 <<
 
 >>arccos($a)
-cosÎ($a)
+cosÎ ($a)
 <<
 
 >>arcsin($a)
@@ -33,29 +33,45 @@ tanÎ ($a)
 <<
 
 >>factorial($a)
-$a!
+($a)!
 <<
 
 >>permutation($a, $b)
-$a†$b
+($a)†($b)
 <<
 
 >>combination($a, $b)
-$a‚$b
+($a)‚($b)
 <<
 
 >>sqrt($a)
-Ë$a
+Ë($a)
 <<
 
 >>abs($a)
-Abs $a
+Abs ($a)
 <<
 
 >>pow($a, $b)
-$a^$b
+($a)^($b)
 <<
 
 >>inRange($a, $b, $c)
 ($aÊ$b And $aÉ$c)
+<<
+
+>>i()
+½
+<<
+
+>>PI()
+æ
+<<
+
+>>max($a,$b)
+Max({$a,$b})
+<<
+
+>>min($a,$b)
+Min({$a,$b})
 <<

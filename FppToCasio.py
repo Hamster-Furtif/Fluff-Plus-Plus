@@ -363,7 +363,7 @@ def generateMainCode(line):
     if split[0] == "for":
         i = split.index("to")
         split[1:i] = swapAround(split[1:i])
-    elif "causes" in split:
+    elif "causes" in split and "=" in split:
         i = split.index("causes")
         split[i+1:] = swapAround(split[i+1:])
     elif "=" in split:
@@ -395,7 +395,7 @@ def swapAround(split, c="="):
     if(c in split):
         return split[split.index(c)+1:] + [c] + split[:split.index(c)]
     else:
-        return "ERROR: Swap error, string not found: no occurence of '" + c + "' in '" + str(split) + "'" 
+        print("ERROR: Swap error, string not found: no occurence of '" + c + "' in '" + str(split) + "'" )
 
 
 
@@ -454,7 +454,7 @@ def transcript(split, origin="(Origin Unknown)"):
             return transcript([elem[:k],elem[k:]])
         
         else:
-            print("No match for: '"+elem+"'")
+            print("ERROR: No match for: '"+elem+"'")
             return ">"+elem+"<"
     else:
         print("Split is empty !")

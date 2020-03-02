@@ -1,0 +1,33 @@
+complex
+
+>>fromPolar($r, $t)
+$r#7F54$t
+<<
+
+>>abs($z)
+Abs $z
+<<
+
+>>arg($z)
+Arg $z
+<<
+
+>>conjugate($z)
+Conjg $z
+<<
+
+>>realPart($z)
+ReP $z
+<<
+
+>>imaginaryPart($z)
+ImP $z
+<<
+
+>>showPolar($z)
+$z>re^äi
+<<
+
+>>showCartesian($r, $t)
+$r#7F54$t>a+bi
+<<

@@ -20,7 +20,7 @@ $a : lines
 $b : columns
 $c : a matrix
 
->>setDim($a, $b, $c)
+>>setDim($c, $a, $b)
 {$a,$b}ãDim $c
 <<
 ==========================
